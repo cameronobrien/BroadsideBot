@@ -25,6 +25,7 @@ To set up the bot, clone the repository and use Pip to set it up.
 
 ```bash
 git clone https://github.com/cameronobrien/BroadsideBot.git
+virtualenv dev
 source dev/bin/activate # source dev/Scripts/activate for Windows
 make setup
 make run
