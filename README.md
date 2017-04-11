@@ -37,8 +37,8 @@ To set up the bot, clone the repository and use Pip to set it up.
 git clone https://github.com/cameronobrien/BroadsideBot.git
 virtualenv dev
 source dev/bin/activate # source dev/Scripts/activate for Windows
-make setup
-make run
+pip install -r requirements.txt
+python main.py
 ```
 
 You'll need to create `data/` under the `app/` folder. In here should be two things:
