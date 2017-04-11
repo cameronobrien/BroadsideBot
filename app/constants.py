@@ -16,3 +16,4 @@ ZOLTAR_CHOICES = ["As I see it, yes", "It is certain", "It is decidedly so", "Mo
                   "You may rely on it", "Reply hazy, try again", "Ask again later",
                   "Better not tell you now", "Cannot predict now'", "My reply is no",
                   "Don't count on it", "Very doubtful"]
+IMPLANT_TYPES = ["alpha", "beta", "gamma", "delta", "epsilon", "omega"]

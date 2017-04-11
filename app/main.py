@@ -8,7 +8,7 @@ from discord.ext.commands import Bot
 from random import randint, choice
 from requests import get
 from bs4 import BeautifulSoup as BS
-from app.constants import CLIENT_ID, KHALED_CHOICES, ZOLTAR_CHOICES
+from app.constants import CLIENT_ID, KHALED_CHOICES, ZOLTAR_CHOICES, IMPLANT_TYPES
 
 
 my_bot = Bot(command_prefix="!")
@@ -217,10 +217,9 @@ async def getsetprice(msg):
 
     if not conn:
         return await my_bot.say("EVE static data dump not loaded")
-    types = ["alpha", "beta", "gamma", "delta", "epsilon", "omega"]
     term = msg.replace("!getsetprice ", "")
     term = term.strip()
-    terms = map(lambda x: term + " " + x, types)
+    terms = map(lambda x: term + " " + x, IMPLANT_TYPES)
     total = 0
     results = []
     for item in terms:
