@@ -4,7 +4,12 @@ from discord.ext.commands import Bot
 from random import randint, choice
 from requests import get
 from bs4 import BeautifulSoup as BS
-import urllib.parse
+from bs4 import BeautifulStoneSoup
+import sqlite3
+import os
+import urllib
+import re
+
 my_bot = Bot(command_prefix="!")
 
 
@@ -14,17 +19,33 @@ async def on_read():
 
 
 @my_bot.command()
-async def hello(*args):
+async def hello():
+    """
+    Test command to ensure the bot is working
+    Example: !hello
+    """
     return await my_bot.say("Hi team!")
 
 
 @my_bot.command()
-async def istimgay(*args):
-    return await my_bot.say(choice(["Yes.", "No."]))
+async def question():
+    """
+    Ask a question and receive an answer to it.
+    Example: !question Does she love me?
+    """
+    return await my_bot.say(choice(["As I see it, yes", "It is certain", "It is decidedly so", "Most likely",
+                                    "Outlook good", "Signs point to yes", "Without a doubt", "Yes", "Definitely",
+                                    "You may rely on it", "Reply hazy, try again", "Ask again later",
+                                    "Better not tell you now", "Cannot predict now'", "My reply is no",
+                                    "Don't count on it", "Very doubtful"]))
 
 
 @my_bot.command()
-async def roll(*args):
+async def roll():
+    """
+    Roll a die which results somewhere between 1-100
+    Example: !roll
+    """
     return await my_bot.say(randint(1, 100))
 
 
@@ -79,14 +100,40 @@ async def spam(args):
     Example: !spam :ok_hand:
     """
 
-    if not args or len(args) > 10:
+    if not args or len(args) > 25:
         return await my_bot.say("Invalid spam input")
 
     y = args * randint(5, 20)
     return await my_bot.say(f"{''.join(y)}")
 
 
+@my_bot.command()
+async def blessup():
+    """
+    Recite a DJ Khaled quote
+    Example: !blessup
+    """
+    return await my_bot.say(choice(["They don't want you to eat!", "Bless Up", "All Praise to the most high",
+                                    "Some people can't handle success...heh...I can!", "Follow me on the pathway to more success",
+                                    "Asahd let's hit the studio", "Asahd send me this video!", "Honey, did the Drake vocals come in yet?!?",
+                                    "Everything is top secret.", "Always have faith, always have hope.", "The key is to make it",
+                                    "Smh, they mad when you have joy...", "Key to more success is a clean heart and a clean face.",
+                                    "Baby, you smart! You loyal! You a genius!", "They'll try to close the door on you... Just open it.",
+                                    "Another one. No, another two!", "Another one.", "Cocoa Butter is the Key.",
+                                    "Congratulations, you played yourself.", "Don't ever play yourself.", "They don't want you to jetski, so we on the jetski",
+                                    "Miami finga' lickin", "Big up!"]))
+
+
+@my_bot.command()
+async def getprice(args):
+    EVECENTRAL = "http://api.eve-central.com/api/marketstat?typeid=%s&minQ=1&&regionlimit=10000002"
+    EVESTATICDATADUMP = "data/sqlite-latest.sqlite"
+
+    if os.path.isfile(os.path.expanduser(EVESTATICDATADUMP)):
+        conn = sqlite3.connect(os.path.expanduser(EVESTATICDATADUMP))
+    else:
+        conn = None
+    c = conn.cursor()
+
+
 my_bot.run("MzAwNzQxNjQ4OTAyNzgyOTc3.C8w3Og.bcqIDv5WeKzOXAyzbnl0WKLuP4Y")
-
-
-
