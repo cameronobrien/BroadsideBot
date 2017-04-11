@@ -26,6 +26,7 @@ To run this bot, you will need:
 * Pip 
 * VirtualEnv installed from Pip
 * A Discord account to register for your bot
+* A SQLite Version of the Eve Static Data Export (SDE), if you intend to use the EVE features
 
 
 ### Setup
