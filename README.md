@@ -27,7 +27,7 @@ To run this bot, you will need:
 * VirtualEnv installed from Pip
 * A Discord account to register for your bot
 
-q
+
 ### Setup
 
 To set up the bot, clone the repository and use Pip to set it up.
