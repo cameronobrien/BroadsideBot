@@ -1,15 +1,14 @@
 import discord
 import logging
-from discord.ext.commands import Bot
-from random import randint, choice
-from requests import get
-from bs4 import BeautifulSoup as BS
-from bs4 import BeautifulStoneSoup
-from constants import CLIENT_ID
 import sqlite3
 import os
 import urllib.request
 import re
+from discord.ext.commands import Bot
+from random import randint, choice
+from requests import get
+from bs4 import BeautifulSoup as BS
+from app.constants import CLIENT_ID, KHALED_CHOICES, ZOLTAR_CHOICES
 
 
 my_bot = Bot(command_prefix="!")
@@ -32,14 +31,10 @@ async def hello():
 @my_bot.command()
 async def question():
     """
-    Ask a question and receive an answer to it.
+    Ask a yes or no question and receive an answer to it.
     Example: !question Does she love me?
     """
-    return await my_bot.say(choice(["As I see it, yes", "It is certain", "It is decidedly so", "Most likely",
-                                    "Outlook good", "Signs point to yes", "Without a doubt", "Yes", "Definitely",
-                                    "You may rely on it", "Reply hazy, try again", "Ask again later",
-                                    "Better not tell you now", "Cannot predict now'", "My reply is no",
-                                    "Don't count on it", "Very doubtful"]))
+    return await my_bot.say(choice(ZOLTAR_CHOICES))
 
 
 @my_bot.command()
@@ -115,15 +110,7 @@ async def blessup():
     Recite a DJ Khaled quote
     Example: !blessup
     """
-    return await my_bot.say(choice(["They don't want you to eat!", "Bless Up", "All Praise to the most high",
-                                    "Some people can't handle success...heh...I can!", "Follow me on the pathway to more success",
-                                    "Asahd let's hit the studio", "Asahd send me this video!", "Honey, did the Drake vocals come in yet?!?",
-                                    "Everything is top secret.", "Always have faith, always have hope.", "The key is to make it",
-                                    "Smh, they mad when you have joy...", "Key to more success is a clean heart and a clean face.",
-                                    "Baby, you smart! You loyal! You a genius!", "They'll try to close the door on you... Just open it.",
-                                    "Another one. No, another two!", "Another one.", "Cocoa Butter is the Key.",
-                                    "Congratulations, you played yourself.", "Don't ever play yourself.", "They don't want you to jetski, so we on the jetski",
-                                    "Miami finga' lickin", "Big up!"]))
+    return await my_bot.say(choice(KHALED_CHOICES))
 
 
 @my_bot.command()
