@@ -5,10 +5,12 @@ from random import randint, choice
 from requests import get
 from bs4 import BeautifulSoup as BS
 from bs4 import BeautifulStoneSoup
+from constants import CLIENT_ID
 import sqlite3
 import os
-import urllib
+import urllib.request
 import re
+
 
 my_bot = Bot(command_prefix="!")
 
@@ -125,15 +127,61 @@ async def blessup():
 
 
 @my_bot.command()
-async def getprice(args):
-    EVECENTRAL = "http://api.eve-central.com/api/marketstat?typeid=%s&minQ=1&&regionlimit=10000002"
+async def getprice(msg):
+
+    EVECENTRAL = "http://api.eve-central.com/api/marketstat?typeid=%s&regionlimit=10000002"
     EVESTATICDATADUMP = "data/sqlite-latest.sqlite"
 
     if os.path.isfile(os.path.expanduser(EVESTATICDATADUMP)):
         conn = sqlite3.connect(os.path.expanduser(EVESTATICDATADUMP))
     else:
         conn = None
-    c = conn.cursor()
+
+    def get_type_id(name):
+        c = conn.cursor()
+        c.execute("select typeName, typeID from invTypes where typeName = '{0}%' collate nocase;".format(name))
+        result = c.fetchone()
+        if result:
+            return result
+        c.execute("select typeName, typeID from invTypes where typeName like '%{0}%' collate nocase;".format(name))
+        results = c.fetchall()
+        if len(results) == 0:
+            return None
+        results = sorted(results, key=lambda x: len(x[0]))
+        print(results[0])
+        return results[0]
 
 
-my_bot.run("MzAwNzQxNjQ4OTAyNzgyOTc3.C8w3Og.bcqIDv5WeKzOXAyzbnl0WKLuP4Y")
+    def itemtoprice(item):
+        try:
+            result = get_type_id(item)
+            assert result
+            item = result[0]
+            url = EVECENTRAL % result[1]
+            print(url)
+            soup = BS(urllib.request.urlopen(url), "html.parser")
+            price = str(soup.find("sell").min)
+            removetags = re.compile("<(.|\n)*?>")
+            price = removetags.sub("", price)
+            price = float(price)
+            if price == 0:
+                raise ZeroDivisionError
+            import locale
+            locale.setlocale(locale.LC_ALL, "")
+            formattedprice = locale.format('%d', price, True)
+            return item, formattedprice, price
+        except Exception as e:
+            return None, None, None
+
+    if not conn:
+        return await my_bot.say("EVE static data dump not loaded")
+    term = msg.replace("!getprice ", "")
+    try:
+        item, formattedprice, price = itemtoprice(term)
+        print("%s :  %s ISK" % (item, formattedprice))
+        return await my_bot.say("%s :  %s ISK" % (item, formattedprice))
+    except Exception as e:
+        return await my_bot.say("Unable to find search item")
+
+
+my_bot.run(CLIENT_ID)
