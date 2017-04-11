@@ -151,8 +151,7 @@ async def getprice(msg):
         print(results[0])
         return results[0]
 
-
-    def itemtoprice(item):
+    def item_to_price(item):
         try:
             result = get_type_id(item)
             assert result
@@ -168,8 +167,8 @@ async def getprice(msg):
                 raise ZeroDivisionError
             import locale
             locale.setlocale(locale.LC_ALL, "")
-            formattedprice = locale.format('%d', price, True)
-            return item, formattedprice, price
+            formatted_price = locale.format('%d', price, True)
+            return item, formatted_price, price
         except Exception as e:
             return None, None, None
 
@@ -177,9 +176,9 @@ async def getprice(msg):
         return await my_bot.say("EVE static data dump not loaded")
     term = msg.replace("!getprice ", "")
     try:
-        item, formattedprice, price = itemtoprice(term)
-        print("%s :  %s ISK" % (item, formattedprice))
-        return await my_bot.say("%s :  %s ISK" % (item, formattedprice))
+        item, formatted_price, price = item_to_price(term)
+        print("%s :  %s ISK" % (item, formatted_price))
+        return await my_bot.say("%s :  %s ISK" % (item, formatted_price))
     except Exception as e:
         return await my_bot.say("Unable to find search item")
 
