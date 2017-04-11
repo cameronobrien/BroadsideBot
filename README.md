@@ -14,7 +14,6 @@ This projects utilizes the `discord.py` library.
 To run this bot, you will need:
 
 * Python 3.6+
-* Requests
 * Pip 
 * VirtualEnv installed from Pip
 * A Discord account to register for your bot
