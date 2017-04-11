@@ -40,3 +40,8 @@ source dev/bin/activate # source dev/Scripts/activate for Windows
 make setup
 make run
 ```
+
+You'll need to create `data/` under the `app/` folder. In here should be two things:
+* The EVE SDE (if you intend to use the EVE features)
+* A .txt file named bot_key, which has only one line and contains your Discord application's client ID
+The bot will not work without the bot key. The SDE is optional but recommended.
