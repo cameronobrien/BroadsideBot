@@ -38,7 +38,7 @@ git clone https://github.com/cameronobrien/BroadsideBot.git
 virtualenv dev
 source dev/bin/activate # source dev/Scripts/activate for Windows
 pip install -r requirements.txt
-python main.py
+python BroadsideBot.py
 ```
 
 You'll need to create `data/` under the `app/` folder. In here should be two things:
