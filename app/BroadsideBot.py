@@ -1,22 +1,64 @@
-import discord
-import logging
+import json
 import sqlite3
 import os
 import urllib.request
 import re
-from discord.ext.commands import Bot
 from random import randint, choice
-from requests import get
+
 from bs4 import BeautifulSoup as BS
+from discord.ext.commands import Bot
+from requests import get
+import pymongo
+
 from app.constants import CLIENT_ID, KHALED_CHOICES, ZOLTAR_CHOICES, IMPLANT_TYPES
+from app.intel_entry import IntelEntry
 
 
 my_bot = Bot(command_prefix="!")
+conn = pymongo.MongoClient()
+db = conn['broadside']
+intel = db.intel
+
+INSERT_ERR_USAGE = "Error in arguments. Usage: <timer_name:titan POS>, <system:HED-GP> <time:03/28/17> <date:21:00>"
+VIEW_ERR_USAGE = "Error in arguments. Usage: <key:system>, <value:HED-GP>"
 
 
 @my_bot.event
 async def on_read():
     print("Client logged in")
+
+
+@my_bot.command()
+async def addintel(args):
+    args = args.split()
+
+    if len(args) not in [5, 6]:
+        return await my_bot.say(INSERT_ERR_USAGE)
+
+    timer_name, alliance, system, time, date = args[:5]
+
+    if len(args[5:]) > 0:
+        location = args[5]
+
+    entry = IntelEntry(timer_name=timer_name, alliance=alliance, system=system, time=time, date=date, location=location)
+
+    entry_id = str(intel.insert(entry.to_dict()))
+    return await my_bot.say("Inserted intel entry {}.".format(entry_id))
+
+
+@my_bot.command()
+async def viewintel(args):
+    args = args.split()
+
+    if len(args) != 2:
+        return await my_bot.say(VIEW_ERR_USAGE)
+    else:
+        return await my_bot.say(json.dumps(list(intel.find({args[0]: args[1]}))))
+
+
+@my_bot.command()
+async def viewintelkeys():
+    return await my_bot.say(json.dumps(list(IntelEntry.KEYS)))
 
 
 @my_bot.command()
