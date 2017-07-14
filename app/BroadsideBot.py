@@ -30,7 +30,7 @@ async def on_read():
 
 @my_bot.command()
 async def addintel(args):
-    args = args.split()
+    args = [a.strip() for a in args.split(',')]
 
     if len(args) not in [5, 6]:
         return await my_bot.say(INSERT_ERR_USAGE)
@@ -48,7 +48,7 @@ async def addintel(args):
 
 @my_bot.command()
 async def viewintel(args):
-    args = args.split()
+    args = [a.strip() for a in args.split(',')]
 
     if len(args) != 2:
         return await my_bot.say(VIEW_ERR_USAGE)
