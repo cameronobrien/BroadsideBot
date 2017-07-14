@@ -19,7 +19,7 @@ conn = pymongo.MongoClient()
 db = conn['broadside']
 intel = db.intel
 
-INSERT_ERR_USAGE = "Error in arguments. Usage: <timer_name:titan POS>, <system:HED-GP> <time:03/28/17> <date:21:00>"
+INSERT_ERR_USAGE = "Error in arguments. Usage: <timer_name:titan POS>, <alliance:PL>, <system:HED-GP>, <time:03/28/17>, <date:21:00>"
 VIEW_ERR_USAGE = "Error in arguments. Usage: <key:system>, <value:HED-GP>"
 
 
