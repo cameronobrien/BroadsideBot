@@ -277,7 +277,7 @@ async def getsetprice(msg):
     return await my_bot.say("%s" % str(results))
 
 
-@my_bot.command()
+@my_bot.command(pass_context=True)
 async def addquote(ctx, *args):
     """Displays a random quote from an array of quotes."""
     msg = ctx.message.content
@@ -291,7 +291,7 @@ async def addquote(ctx, *args):
 @my_bot.command()
 async def quote(*args):
     """Displays a random quote from quotes.txt"""
-    return await my_bot.say(random.choice(QUOTE_LIST))
+    return await my_bot.say(choice(QUOTE_LIST))
 
 
 my_bot.run(CLIENT_ID)
