@@ -17,3 +17,38 @@ ZOLTAR_CHOICES = ["As I see it, yes", "It is certain", "It is decidedly so", "Mo
                   "Better not tell you now", "Cannot predict now'", "My reply is no",
                   "Don't count on it", "Very doubtful"]
 IMPLANT_TYPES = ["alpha", "beta", "gamma", "delta", "epsilon", "omega"]
+
+QUOTE_LIST = []
+
+
+# Used for validating in add_quote
+class ValidationError(Exception):
+    pass
+
+
+# Quotes #
+# Open quotes.txt and read the contents into quote_list
+def update_quotes():
+    with open('quotes.txt', 'r') as f:
+        for line in f:
+            line.rstrip('\n')
+            QUOTE_LIST.append(line)
+
+
+def add_quote(msg):
+    # Validate that the given quote has quotation marks and an author
+    if '"' in msg:
+        newMsg = msg.split('"')
+        if '-' in newMsg[len(newMsg)-1]:
+            # Write the quote to quotes.txt and strip the !add prefix
+            with open('quotes.txt', 'a') as f:
+                f.write('\n')
+                for i in range(1, len(newMsg)):
+                    f.write(newMsg[i] + " ")
+            update_quotes()
+            return True
+        else:
+            raise ValidationError('Please add an author at the end of your quote.')
+    else:
+        raise ValidationError('Please use quotation marks when adding a quote.')
+

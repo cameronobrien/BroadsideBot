@@ -10,8 +10,8 @@ from discord.ext.commands import Bot
 from requests import get
 import pymongo
 
-from app.constants import CLIENT_ID, KHALED_CHOICES, ZOLTAR_CHOICES, IMPLANT_TYPES
-from app.intel_entry import IntelEntry
+from constants import CLIENT_ID, KHALED_CHOICES, ZOLTAR_CHOICES, IMPLANT_TYPES, add_quote, update_quotes, ValidationError, QUOTE_LIST
+from intel_entry import IntelEntry
 
 
 my_bot = Bot(command_prefix="!")
@@ -19,18 +19,18 @@ conn = pymongo.MongoClient()
 db = conn['broadside']
 intel = db.intel
 
-INSERT_ERR_USAGE = "Error in arguments. Usage: <timer_name:titan POS>, <alliance:PL>, <system:HED-GP>, <time:03/28/17>, <date:21:00>"
+INSERT_ERR_USAGE = "Error in arguments. Usage: <timer_name:titan POS>, <system:HED-GP> <time:21:00 > <date: 07/24/17>"
 VIEW_ERR_USAGE = "Error in arguments. Usage: <key:system>, <value:HED-GP>"
 
 
 @my_bot.event
-async def on_read():
+async def on_ready():
     print("Client logged in")
 
 
 @my_bot.command()
 async def addintel(args):
-    args = [a.strip() for a in args.split(',')]
+    args = args.split()
 
     if len(args) not in [5, 6]:
         return await my_bot.say(INSERT_ERR_USAGE)
@@ -48,7 +48,7 @@ async def addintel(args):
 
 @my_bot.command()
 async def viewintel(args):
-    args = [a.strip() for a in args.split(',')]
+    args = args.split()
 
     if len(args) != 2:
         return await my_bot.say(VIEW_ERR_USAGE)
@@ -275,6 +275,23 @@ async def getsetprice(msg):
     ftotal = locale.format('%d', total, True)
     results.append(("total", ftotal))
     return await my_bot.say("%s" % str(results))
+
+
+@my_bot.command()
+async def addquote(ctx, *args):
+    """Displays a random quote from an array of quotes."""
+    msg = ctx.message.content
+    try:
+        add_quote(msg)
+        return await my_bot.say('Quote successfuly added.')
+    except ValidationError as exception:
+        return await my_bot.say(exception)
+
+
+@my_bot.command()
+async def quote(*args):
+    """Displays a random quote from quotes.txt"""
+    return await my_bot.say(random.choice(QUOTE_LIST))
 
 
 my_bot.run(CLIENT_ID)
