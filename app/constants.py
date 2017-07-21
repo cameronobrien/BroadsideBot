@@ -98,3 +98,5 @@ def convert_txt():
             n = line.rstrip()
             add_quote(n)
 
+if __name__ == "__main__":
+    convert_txt()
