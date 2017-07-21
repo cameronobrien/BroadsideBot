@@ -1,3 +1,10 @@
+from pymongo import MongoClient
+import random
+
+client = MongoClient()
+db = client.quotes
+collection = db.fb_quotes
+
 with open('data/bot_key.txt') as f:
     CLIENT_ID = f.read().strip()
 
@@ -26,29 +33,68 @@ class ValidationError(Exception):
     pass
 
 
-# Quotes #
-# Open quotes.txt and read the contents into quote_list
-def update_quotes():
-    with open('quotes.txt', 'r') as f:
-        for line in f:
-            line.rstrip('\n')
-            QUOTE_LIST.append(line)
+class Quote(object):
+
+    def __init__(self, ctx):
+        temp = ctx.split('"')
+        self.msg = temp[1]
+        self.author = temp[-1]
+        self.call_count = 0
+
+    def to_dict(self):
+        return self.__dict__
+
+    def to_mongo(self):
+        collection.insert(self.to_dict())
 
 
-def add_quote(msg):
-    # Validate that the given quote has quotation marks and an author
+# Used by main.py to get a random quote for the !quote command #
+# Gets the max size of the collection -1 and picks a quote
+# at that index for use
+def get_random():
+    collection_max = int(db.fb_quotes.find().count())-1
+    rand_index = random.randint(0, collection_max)
+    return db.fb_quotes.find()[rand_index]
+
+
+def print_quote():
+    # Used by main.py to display a quote and increments call_count by 1
+    rand_quote = get_random()
+    db.fb_quotes.update_one({'_id': rand_quote['_id']}, {'$inc': {'call_count': 1}}, upsert=False)
+    return rand_quote
+
+
+# Validate that the given quote has quotation marks and an author
+def validate_quote(msg):
     if '"' in msg:
-        newMsg = msg.split('"')
-        if '-' in newMsg[len(newMsg)-1]:
-            # Write the quote to quotes.txt and strip the !add prefix
-            with open('quotes.txt', 'a') as f:
-                f.write('\n')
-                for i in range(1, len(newMsg)):
-                    f.write(newMsg[i] + " ")
-            update_quotes()
+        new = msg.split('"')
+        if '-' in new[-1]:
+            print('Successful Validation!')
+            # Adds the quote to collection after validation success
+            add_quote(msg)
             return True
         else:
             raise ValidationError('Please add an author at the end of your quote.')
     else:
         raise ValidationError('Please use quotation marks when adding a quote.')
+
+
+def add_quote(msg):
+    # Accepts message after validation to add to collection
+    Quote(msg).to_mongo()
+
+
+def get_call_count_total():
+    call_total = 0
+    for i in range(0, db.fb_quotes.find().count()-1):
+        temp = db.milk_quotes.find()[i]
+        call_total = call_total+int(temp['call_count'])
+    return call_total
+
+
+def convert_txt():
+    with open('quotes.txt', 'r+') as f:
+        for line in f:
+            n = line.rstrip()
+            add_quote(n)
 
