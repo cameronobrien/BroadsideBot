@@ -10,7 +10,7 @@ from discord.ext.commands import Bot
 from requests import get
 import pymongo
 
-from constants import *
+from constants import CLIENT_ID, KHALED_CHOICES, ZOLTAR_CHOICES, IMPLANT_TYPES, add_quote, update_quotes, ValidationError, QUOTE_LIST
 from intel_entry import IntelEntry
 
 
@@ -279,10 +279,10 @@ async def getsetprice(msg):
 
 @my_bot.command(pass_context=True)
 async def addquote(ctx, *args):
-    """Adds the message content to quotes.txt if formatted correctly"""
+    """Displays a random quote from an array of quotes."""
     msg = ctx.message.content
     try:
-        validate_quote(msg)
+        add_quote(msg)
         return await my_bot.say('Quote successfuly added.')
     except ValidationError as exception:
         return await my_bot.say(exception)
@@ -291,11 +291,7 @@ async def addquote(ctx, *args):
 @my_bot.command()
 async def quote(*args):
     """Displays a random quote from quotes.txt"""
-    q = print_quote()
-    call_total = get_call_count_total()
-    formatted = '{0:.3g}'.format(q['call_count']/call_total*100)
-    return await my_bot.say('"{}"{} \nThis quote has been used {} times accounting for'
-                              ' {}% of total usage.'.format(q['msg'], q['author'], q['call_count'], formatted))
+    return await my_bot.say(choice(QUOTE_LIST))
 
 
 my_bot.run(CLIENT_ID)
