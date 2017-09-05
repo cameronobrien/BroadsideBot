@@ -9,7 +9,7 @@ KHALED_CHOICES = ["They don't want you to eat!", "Bless Up", "All Praise to the 
                   "Baby, you smart! You loyal! You a genius!", "They'll try to close the door on you... Just open it.",
                   "Another one. No, another two!", "Another one.", "Cocoa Butter is the Key.",
                   "Congratulations, you played yourself.", "Don't ever play yourself.", "They don't want you to jetski, so we on the jetski",
-                  "Miami finga' lickin", "Big up!"]
+                  "Miami finga' lickin", "Big up!","All I do is WIN, WIN, WIN no matter what","I remember when I ain’t have a jacuzzi","Watch your back, but more importantly when you get out the shower, dry your back. It’s a cold world out there.","Be a star. Be a Superstar","Almond milk + cinnamon crunch = major key to success.","The key is to enjoy life, because they don’t want you to enjoy life.","To succeed, you must believe. When you believe, you will succeed.","In life everyone has a choice. The key is: make a right choice.","We have to get money. We have no choice. It cost money to eat.","The key is: never fold."]
 
 ZOLTAR_CHOICES = ["As I see it, yes", "It is certain", "It is decidedly so", "Most likely",
                   "Outlook good", "Signs point to yes", "Without a doubt", "Yes", "Definitely",
