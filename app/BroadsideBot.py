@@ -10,7 +10,7 @@ from discord.ext.commands import Bot
 from requests import get
 import pymongo
 
-from constants import CLIENT_ID, KHALED_CHOICES, ZOLTAR_CHOICES, IMPLANT_TYPES, add_quote, update_quotes, ValidationError, QUOTE_LIST
+from constants import CLIENT_ID, KHALED_CHOICES, ZOLTAR_CHOICES, IMPLANT_TYPES, add_quote, update_quotes, ValidationError, QUOTE_LIST, YES_NO
 from intel_entry import IntelEntry
 
 
@@ -25,7 +25,13 @@ VIEW_ERR_USAGE = "Error in arguments. Usage: <key:system>, <value:HED-GP>"
 
 @my_bot.event
 async def on_ready():
-    print("Client logged in")
+    print("Client logged in.")
+    update_quotes()
+
+
+@my_bot.command()
+async def decide(args):
+    return await my_bot.say(choice(YES_NO))
 
 
 @my_bot.command()

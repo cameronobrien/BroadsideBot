@@ -18,6 +18,8 @@ ZOLTAR_CHOICES = ["As I see it, yes", "It is certain", "It is decidedly so", "Mo
                   "Don't count on it", "Very doubtful"]
 IMPLANT_TYPES = ["alpha", "beta", "gamma", "delta", "epsilon", "omega"]
 
+YES_NO["yes","no"]
+
 QUOTE_LIST = []
 
 
