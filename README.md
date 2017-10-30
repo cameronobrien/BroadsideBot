@@ -12,11 +12,10 @@ This bot can:
 
 * Recite random DJ Khaled quotes
 * Roll a die
-* Answer a question
+* Answer a yes or no question
 * Check the price of an EVE Online item using the EVE-Central Market API
-* Spam emojis
 * Search youtube videos
-
+* Store quotes 
 
 ### Requirements
 
