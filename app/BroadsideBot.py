@@ -164,7 +164,7 @@ async def blessup():
 @my_bot.command()
 async def getprice(msg):
 
-    EVECENTRAL = "http://api.eve-central.com/api/marketstat?typeid=%s&regionlimit=10000002"
+    EVEMARKETER = "http://api.evemarketer.com/ec/marketstat?typeid=%s&regionlimit=10000002"
     EVESTATICDATADUMP = "data/sqlite-latest.sqlite"
 
     if os.path.isfile(os.path.expanduser(EVESTATICDATADUMP)):
@@ -191,7 +191,7 @@ async def getprice(msg):
             result = get_type_id(item)
             assert result
             item = result[0]
-            url = EVECENTRAL % result[1]
+            url = EVEMARKETER % result[1]
             print(url)
             soup = BS(urllib.request.urlopen(url), "html.parser")
             price = str(soup.find("sell").min)
@@ -220,7 +220,7 @@ async def getprice(msg):
 
 @my_bot.command()
 async def getsetprice(msg):
-    EVECENTRAL = "http://api.eve-central.com/api/marketstat?typeid=%s&regionlimit=10000002"
+    EVECENTRAL = "http://api.evemarketer.com/ec/marketstat?typeid=%s&regionlimit=10000002"
     EVESTATICDATADUMP = "data/sqlite-latest.sqlite"
 
     if os.path.isfile(os.path.expanduser(EVESTATICDATADUMP)):
