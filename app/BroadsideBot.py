@@ -1,13 +1,12 @@
 import json
 import sqlite3
 import os
-import urllib.request
 import re
 from random import randint, choice
 
 from bs4 import BeautifulSoup as BS
 from discord.ext.commands import Bot
-from requests import get
+import requests
 import pymongo
 
 from constants import CLIENT_ID, KHALED_CHOICES, ZOLTAR_CHOICES, IMPLANT_TYPES, add_quote, update_quotes, ValidationError, QUOTE_LIST, YES_NO
@@ -193,7 +192,7 @@ async def getprice(msg):
             item = result[0]
             url = EVEMARKETER % result[1]
             print(url)
-            soup = BS(urllib.request.urlopen(url), "html.parser")
+            soup = BS(requests.get(url).content, "html.parser")
             price = str(soup.find("sell").min)
             removetags = re.compile("<(.|\n)*?>")
             price = removetags.sub("", price)
@@ -218,9 +217,10 @@ async def getprice(msg):
         return await my_bot.say("Unable to find search item")
 
 
+
 @my_bot.command()
 async def getsetprice(msg):
-    EVECENTRAL = "http://api.evemarketer.com/ec/marketstat?typeid=%s&regionlimit=10000002"
+    EVECENTRAL = "https://api.evemarketer.com/ec/marketstat?typeid=%s&regionlimit=10000002"
     EVESTATICDATADUMP = "data/sqlite-latest.sqlite"
 
     if os.path.isfile(os.path.expanduser(EVESTATICDATADUMP)):
