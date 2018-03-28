@@ -23,7 +23,7 @@ To run this bot, you will need:
 
 * Python 3.6+
 * Pip 
-* VirtualEnv installed from Pip
+* VirtualEnv installed from Pip (and virtualenvwrapper for ease of use, ideally)
 * A Discord account to register for your bot
 * A SQLite Version of the Eve Static Data Export (SDE), if you intend to use the EVE features
 
@@ -35,7 +35,7 @@ To set up the bot, clone the repository and use Pip to set it up.
 ```bash
 git clone https://github.com/cameronobrien/BroadsideBot.git
 virtualenv dev
-source dev/bin/activate # source dev/Scripts/activate for Windows
+workon dev
 pip install -r requirements.txt
 python BroadsideBot.py
 ```
